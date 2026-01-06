@@ -1,0 +1,31 @@
+import os 
+from typing import Optional, Dict, Any
+from pydantic import BaseModel
+
+class Config(BaseModel):
+  """Config class"""
+
+  # LLM config
+  temperature: float = 0.7
+  max_tokens: Optional[int] = None
+
+  # System config
+  debug: bool = False
+  log_level: str = "INFO"
+
+  # other config
+  max_history_length: int = 100
+
+  @classmethod
+  def from_env(cls) -> "Config":
+    """Create Config from environment variables."""
+    return cls(
+      debug=os.getenv("DEBUG", "false").lower() == "true",
+      log_level=os.getenv("LOG_LEVEL", "INFO"),
+      temperature=float(os.getenv("TEMPERATURE", 0.7)),
+      max_tokens=int(os.getenv("MAX_TOKENS")) if os.getenv("MAX_TOKENS") else None,
+    )
+
+  def to_dict(self) -> Dict[str, Any]:
+    """Convert to the dict."""
+    return self.dict()
