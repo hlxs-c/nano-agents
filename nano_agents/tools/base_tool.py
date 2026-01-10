@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field
-from typing import Type, Any, Dict, Optional
+from pydantic import BaseModel
+from typing import Type, Any
 from abc import abstractmethod
 
 class BaseTool(BaseModel):
@@ -15,7 +15,6 @@ class BaseTool(BaseModel):
     validated_args = self.args_schema(**kwargs)
     return self._run(validated_args)
   
-  @classmethod
   @abstractmethod
   def _run(self, args: BaseModel) -> Any:
     """The specific tool subclass implements this logic."""
