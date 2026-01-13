@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from typing import Optional
 from .message import Message
 from .llm import LLM
-from .config import Config
 
 class Agent(ABC):
   """Base Agent class"""
@@ -11,12 +10,10 @@ class Agent(ABC):
     name: str,
     llm: LLM,
     system_prompt: Optional[str] = None,
-    config: Optional[Config] = None
   ):
     self.name = name
     self.llm = llm
     self.system_prompt = system_prompt
-    self.config = config or Config()
     self._history: list[Message] = []
 
   @abstractmethod

@@ -1,31 +1,20 @@
-import os 
-from typing import Optional, Dict, Any
 from pydantic import BaseModel
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-class Config(BaseModel):
-  """Config class"""
-
-  # LLM config
+class LLMConfig(BaseModel):
+  api_key: str
+  base_url: str
+  model_name: str
   temperature: float = 0.7
-  max_tokens: Optional[int] = None
+  timeout: int = 60
 
-  # System config
-  debug: bool = False
-  log_level: str = "INFO"
+class Settings(BaseSettings):
+  # 模块化配置
+  llm: LLMConfig
 
-  # other config
-  max_history_length: int = 100
-
-  @classmethod
-  def from_env(cls) -> "Config":
-    """Create Config from environment variables."""
-    return cls(
-      debug=os.getenv("DEBUG", "false").lower() == "true",
-      log_level=os.getenv("LOG_LEVEL", "INFO"),
-      temperature=float(os.getenv("TEMPERATURE", 0.7)),
-      max_tokens=int(os.getenv("MAX_TOKENS")) if os.getenv("MAX_TOKENS") else None,
-    )
-
-  def to_dict(self) -> Dict[str, Any]:
-    """Convert to the dict."""
-    return self.dict()
+  # 配置读取规则
+  model_config = SettingsConfigDict(
+    env_prefix="NANO_",         # 环境变量前缀，防止冲突
+    env_nested_delimiter="__",  # 支持嵌套，NANO_LLM__API_KEY
+    env_file_encoding="utf-8"
+  )

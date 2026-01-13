@@ -3,7 +3,6 @@ from typing import Optional, Iterator
 from nano_agents.core.agent import Agent
 from nano_agents.core.llm import LLM
 from nano_agents.core.message import Message
-from nano_agents.core.config import Config
 
 class SimpleAgent(Agent):
   """Simple agent for chat."""
@@ -13,9 +12,8 @@ class SimpleAgent(Agent):
     name: str,
     llm: LLM,
     system_prompt: Optional[str] = None,
-    config: Optional[Config] = None
   ):
-    super().__init__(name, llm, system_prompt, config)
+    super().__init__(name, llm, system_prompt)
   
   def run(self, input_text: str, **kwargs):
     """

@@ -1,10 +1,8 @@
 import os
 from typing import Optional, Iterator
 from openai import OpenAI
-from dotenv import load_dotenv
 
-# load environment variables from .env
-load_dotenv()
+import nano_agents
 
 class LLM:
   """
@@ -21,7 +19,7 @@ class LLM:
     model: Optional[str] = None,
     api_key: Optional[str] = None,
     base_url: Optional[str] = None,
-    temperature: float = 0.7,
+    temperature: Optional[float] = 0.7,
     max_tokens: Optional[int] = None,
     timeout: Optional[int] = None,
     **kwargs
@@ -38,12 +36,13 @@ class LLM:
       timeout: Timeout, if not provided, it will be read from the environment variable LLM_TIME_OUT, default is 60 seconds
     """
     # Prioritize using incoming parameters, if not provided, load from environment variables
-    self.model = model or os.getenv("LLM_MODEL_ID")
-    self.api_key = api_key or os.getenv("LLM_API_KEY")
-    self.base_url = base_url or os.getenv("LLM_BASE_URL")
-    self.temperature = temperature
+    settings = nano_agents.get_settings()
+    self.model = model or settings.llm.model_name
+    self.api_key = api_key or settings.llm.api_key
+    self.base_url = base_url or settings.llm.base_url
+    self.temperature = temperature or settings.llm.temperature
     self.max_tokens = max_tokens
-    self.timeout = timeout or int(os.getenv("LLM_TIME_OUT", 60))
+    self.timeout = timeout or settings.llm.timeout
     self.kwargs = kwargs
 
     if not all([self.model, self.api_key, self.base_url]):

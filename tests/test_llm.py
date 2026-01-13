@@ -1,10 +1,8 @@
-
-from dotenv import load_dotenv
-
+import nano_agents
 from nano_agents.core.llm import LLM
 
-# load environment variables from .env
-load_dotenv()
+# 框架配置初始化
+nano_agents.setup("../.env")
 
 if __name__ == "__main__":
   try:
@@ -20,7 +18,7 @@ if __name__ == "__main__":
       continue
 
     # 测试非流式响应
-    responseText = llmClient.invoke(messages=exampleMessages)
+    # responseText = llmClient.invoke(messages=exampleMessages)
 
   except Exception as e:
     print(e)
