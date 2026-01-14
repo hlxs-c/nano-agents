@@ -16,5 +16,6 @@ class Settings(BaseSettings):
   model_config = SettingsConfigDict(
     env_prefix="NANO_",         # 环境变量前缀，防止冲突
     env_nested_delimiter="__",  # 支持嵌套，NANO_LLM__API_KEY
-    env_file_encoding="utf-8"
+    env_file_encoding="utf-8",
+    extra="ignore"              # 忽略其他前缀开头的环境变量
   )
