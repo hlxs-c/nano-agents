@@ -28,3 +28,9 @@ dependencies = [
 where = ["."]
 include = ["nano_agents*"]
 exclude = ["tests*", "examples*", "docs*"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
+]
